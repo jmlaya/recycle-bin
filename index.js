@@ -10,7 +10,7 @@
 
 $(document).ready(function () {
 
-    var map = L.map('mapid').setView([51.505, -0.09], 5);
+    var map = L.map('mapid').setView([4, -72], 6);
     map.zoomControl.setPosition('topright');
     map.addLayer(new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors' }
@@ -29,6 +29,7 @@ $(document).ready(function () {
             ]
         }
     });
+
     control._searchfunctionCallBack = function (searchkeywords) {
         if (!searchkeywords) {
             searchkeywords = "The search call back is clicked !!"
@@ -47,7 +48,10 @@ $(document).ready(function () {
         shadowAnchor: [4, 62],  // the same for the shadow
         popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
-    L.marker([51.5, -0.09], { icon: greenIcon }).addTo(map);
+
+    L.marker([3, -72], { icon: greenIcon })
+        .bindPopup('<h1>Hola mundo</h1>')
+        .addTo(map);
 });
 
 function button2_click() {
