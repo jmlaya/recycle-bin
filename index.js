@@ -50,7 +50,7 @@ $(document).ready(function () {
     });
 
     L.marker([3, -72], { icon: greenIcon })
-        .bindPopup('<h1>Hola mundo</h1>')
+        .bindPopup('<div style="width: 200px">Hola mundo</div>')
         .addTo(map);
 });
 
