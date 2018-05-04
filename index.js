@@ -12,12 +12,36 @@ function addControls(map) {
     var control = new searchboxControl({
         sidebarTitleText: 'Recycle.bin',
         sidebarMenuItems: {
-            Items: [
-                { type: "link", name: "Link 1 (github.com)", href: "http://github.com", icon: "icon-local-carwash" },
-                { type: "link", name: "Link 2 (google.com)", href: "http://google.com", icon: "icon-cloudy" },
-                { type: "button", name: "Button 1", onclick: "alert('button 1 clicked !')", icon: "icon-potrait" },
-                { type: "button", name: "Button 2", onclick: "button2_click();", icon: "icon-local-dining" },
-                { type: "link", name: "Link 3 (stackoverflow.com)", href: 'http://stackoverflow.com', icon: "icon-bike" },
+            Items: [{
+                    type: "link",
+                    name: "Link 1 (github.com)",
+                    href: "http://github.com",
+                    icon: "icon-local-carwash"
+                },
+                {
+                    type: "link",
+                    name: "Link 2 (google.com)",
+                    href: "http://google.com",
+                    icon: "icon-cloudy"
+                },
+                {
+                    type: "button",
+                    name: "Button 1",
+                    onclick: "alert('button 1 clicked !')",
+                    icon: "icon-potrait"
+                },
+                {
+                    type: "button",
+                    name: "Button 2",
+                    onclick: "button2_click();",
+                    icon: "icon-local-dining"
+                },
+                {
+                    type: "link",
+                    name: "Link 3 (stackoverflow.com)",
+                    href: 'http://stackoverflow.com',
+                    icon: "icon-bike"
+                },
             ]
         }
     });
@@ -39,11 +63,13 @@ function addMarkers(map) {
         iconSize: [38, 95], // size of the icon
         shadowSize: [50, 64], // size of the shadow
         iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-        shadowAnchor: [4, 62],  // the same for the shadow
+        shadowAnchor: [4, 62], // the same for the shadow
         popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
 
-    L.marker([3, -72], { icon: greenIcon })
+    L.marker([3, -72], {
+            icon: greenIcon
+        })
         .bindPopup('<div style="width: 200px">Hola mundo</div>')
         .addTo(map);
 }
@@ -55,9 +81,12 @@ function button2_click() {
 function geolocate(map) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
-            const {latitude, longitude} = position.coords;
-            map.setView([latitude,longitude], 10)
-        }) ;
+            const {
+                latitude,
+                longitude
+            } = position.coords;
+            map.setView([latitude, longitude], 10)
+        });
     }
 }
 
@@ -65,12 +94,10 @@ $(document).ready(function () {
 
     var map = L.map('mapid').setView([4, -72], 6);
     map.zoomControl.setPosition('topright');
-    map.addLayer(new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        { attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors' }
-    ));
+    map.addLayer(new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+    }));
     addControls(map);
     addMarkers(map);
     geolocate(map);
 });
-
-
