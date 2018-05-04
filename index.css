@@ -18,3 +18,23 @@ body {
  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
+
+.leaflet-popup-content-wrapper {
+  background: none;
+  padding: 0px;
+  border-radius: 0.25rem;
+}
+
+.leaflet-popup-content{
+  margin: 0px;
+}
+
+.leaflet-popup-content .card {
+  border: none;
+}
+
+.leaflet-popup-content .card img{
+  background-color: #343a40 !important;
+  padding: 10px;
+}
+

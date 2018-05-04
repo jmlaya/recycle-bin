@@ -166,7 +166,7 @@ function loadMarkers(map) {
                     addMarker(map, item);
                 }
             });
-            
+
 
         });
 }
@@ -188,14 +188,14 @@ function addMarker(map, item) {
         map(type=>`<li class="popup__filter"><p class="popup__filter-text">${type}</p></li>`).join('');
 
     const popupHTML = `
-        <div class="popup__header">${item.organization}</div>
-        <p class="popup__description">${item.description}</p>
-        <ul class="popup__filters">${filtersPopup}</ul>
-        <div class="popup__actions">
-            <ul class="popup_links"></ul>
-            <a class="popup__action">Say HI</a>
+        <div class="card">
+            <img class="card-img-top" src="assets/image/logo.png" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">${item.organization}</h5>
+                <p class="card-text">${item.description}</p>
+                <a href="#" class="btn btn-primary text-white" role="button">Say HI</a>
+            </div>
         </div>
-
     `;
 
     L.marker([item.latitude, item.longitude], {
