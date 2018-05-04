@@ -138,7 +138,8 @@ function addControls(map) {
 
 
 function loadMarkers(map) {
-    return $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vTVC-LFP9OxPSuj5D_DfLc_ChY_ricTX76xR6xEjU-KRASLxyRWPjRThzBoi9QfPK0KPgYdL8TENOEj/pub?gid=2103502970&single=true&output=csv')
+    const d = new Date();
+    return $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vTVC-LFP9OxPSuj5D_DfLc_ChY_ricTX76xR6xEjU-KRASLxyRWPjRThzBoi9QfPK0KPgYdL8TENOEj/pub?gid=2103502970&single=true&output=csv&h='+d.getTime())
         .then(data => {
 
             return new Promise(resolve => {
