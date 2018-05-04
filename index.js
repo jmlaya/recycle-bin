@@ -1,5 +1,80 @@
 let allMarkers  = [];
 let curGroup ;
+const menuItems = [{
+    type: "link",
+    name: "Paper and cardboard",
+    href: "javascript:selectMenuItem(0)",
+    icon: "far fa-file"
+},
+{
+    type: "link",
+    name: "Glass",
+    href: "javascript:selectMenuItem(1)",
+    icon: "fas fa-glass-martini"
+},
+{
+    type: "link",
+    name: "Plastic",
+    href: "javascript:selectMenuItem(2)",
+    icon: "fas fa-recycle"
+},
+{
+    type: "link",
+    name: "Batteries",
+    href: "javascript:selectMenuItem(3)",
+    icon: "fas fa-battery-full"
+},
+{
+    type: "link",
+    name: "Electronic devices",
+    href: "javascript:selectMenuItem(4)",
+    icon: "fas fa-laptop"
+},
+{
+    type: "link",
+    name: "Clothes & Shoes",
+    href: "javascript:selectMenuItem(5)",
+    icon: "fas fa-bullseye"
+},
+{
+    type: "link",
+    name: "Furniture",
+    href: "javascript:selectMenuItem(6)",
+    icon: "fas fa-couch"
+},
+{
+    type: "link",
+    name: "Appliances",
+    href: "javascript:selectMenuItem(7)",
+    icon: "fas fa-bullseye"
+},
+{
+    type: "link",
+    name: "Building materials",
+    href: "javascript:selectMenuItem(8)",
+    icon: "far fa-building"
+},
+{
+    type: "link",
+    name: "Books",
+    href: "javascript:selectMenuItem(9)",
+    icon: "fas fa-book"
+},
+{
+    type: "link",
+    name: "Baby products",
+    href: "javascript:selectMenuItem(10)",
+    icon: "fas fa-child"
+},
+{
+    type: "link",
+    name: "Biological waste",
+    href: "javascript:selectMenuItem(11)",
+    icon: "fas fa-prescription-bottle-alt"
+},
+];
+
+
 const map = L.map('mapid').setView([4, -72], 6);
 
 function makeNoCacheId() {
@@ -42,79 +117,7 @@ function addControls(map) {
         searchfunctionCallBack: searchItems,
         sidebarTitleText: 'Item types',
         sidebarMenuItems: {
-            Items: [{
-                    type: "link",
-                    name: "Paper and cardboard",
-                    href: "javascript:enableLayer(0)",
-                    icon: "far fa-file"
-                },
-                {
-                    type: "link",
-                    name: "Glass",
-                    href: "javascript:enableLayer(1)",
-                    icon: "fas fa-glass-martini"
-                },
-                {
-                    type: "link",
-                    name: "Plastic",
-                    href: "javascript:enableLayer(2)",
-                    icon: "fas fa-recycle"
-                },
-                {
-                    type: "link",
-                    name: "Batteries",
-                    href: "javascript:enableLayer(3)",
-                    icon: "fas fa-battery-full"
-                },
-                {
-                    type: "link",
-                    name: "Electronic devices",
-                    href: "javascript:enableLayer(4)",
-                    icon: "fas fa-laptop"
-                },
-                {
-                    type: "link",
-                    name: "Clothes & Shoes",
-                    href: "javascript:enableLayer(5)",
-                    icon: "fas fa-bullseye"
-                },
-                {
-                    type: "link",
-                    name: "Furniture",
-                    href: "javascript:enableLayer(6)",
-                    icon: "fas fa-couch"
-                },
-                {
-                    type: "link",
-                    name: "Appliances",
-                    href: "javascript:enableLayer(7)",
-                    icon: "fas fa-bullseye"
-                },
-                {
-                    type: "link",
-                    name: "Building materials",
-                    href: "javascript:enableLayer(8)",
-                    icon: "far fa-building"
-                },
-                {
-                    type: "link",
-                    name: "Books",
-                    href: "javascript:enableLayer(9)",
-                    icon: "fas fa-book"
-                },
-                {
-                    type: "link",
-                    name: "Baby products",
-                    href: "javascript:enableLayer(10)",
-                    icon: "fas fa-child"
-                },
-                {
-                    type: "link",
-                    name: "Biological waste",
-                    href: "javascript:enableLayer(11)",
-                    icon: "fas fa-prescription-bottle-alt"
-                },
-            ]
+            Items: menuItems
         }
     });
 
@@ -259,13 +262,13 @@ function geolocate(map) {
     }
 }
 
-function enableLayer(idx) {
+function selectMenuItem(idx) {
     const items = $(".panel-list li")
-    const layer = $(items[idx])
+    const layer = $(items[idx]);
+    const name = menuItems[idx].name;
     items.removeClass('active');
     layer.addClass('active');
-    const expression = layer.find('a').html();
-    const markers = allMarkers.filter((m) => m.item.items_type.indexOf(expression)> -1);
+    const markers = allMarkers.filter((m) => m.item.items_type.indexOf(name)> -1);
     showMarkers(map, markers);
 }
 
