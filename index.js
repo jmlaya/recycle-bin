@@ -1,12 +1,29 @@
-// var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+function CSVtoArray(text) {
+    let p = '',
+        row = [''],
+        ret = [row],
+        i = 0,
+        r = 0,
+        s = !0,
+        l;
+    for (l in text) {
+        l = text[l];
+        if ('"' === l) {
+            if (s && l === p) row[i] += l;
+            s = !s;
+        } else if (',' === l && s) l = row[++i] = '';
+        else if ('\n' === l && s) {
+            if ('\r' === p) row[i] = row[i].slice(0, -1);
+            row = ret[++r] = [l = ''];
+            i = 0;
+        } else row[i] += l;
+        p = l;
+    }
+    return ret;
+};
 
-// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-//     maxZoom: 18,
-//     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-//         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-//         'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-//     id: 'mapbox.streets'
-// }).addTo(mymap);
+
+
 function addControls(map) {
     var searchboxControl = createSearchboxControl();
     var control = new searchboxControl({
@@ -101,7 +118,60 @@ function addControls(map) {
     $(".panel").css("display", 'block');
 }
 
-function addMarkers(map) {
+
+function loadMarkers(map) {
+    $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vTVC-LFP9OxPSuj5D_DfLc_ChY_ricTX76xR6xEjU-KRASLxyRWPjRThzBoi9QfPK0KPgYdL8TENOEj/pub?gid=2103502970&single=true&output=csv')
+        .then(data => {
+
+            const lines = CSVtoArray(data)
+
+           lines.map(line => {
+                const [timestamp,
+                    email,
+                    organization,
+                    description,
+                    collection_type,
+                    items_type,
+                    city,
+                    state,
+                    address,
+                    phone,
+                    website,
+                    facebook,
+                    twitter,
+                    instagram,
+                    latitude,
+                    longitude
+                ] = line;
+                return {
+                    timestamp,
+                    email,
+                    organization,
+                    description,
+                    collection_type,
+                    items_type: items_type.split(', '),
+                    city,
+                    state,
+                    address,
+                    phone,
+                    website,
+                    facebook,
+                    twitter,
+                    instagram,
+                    latitude: Number(latitude),
+                    longitude: Number(longitude)
+                }
+            }).forEach((item, index) => {
+                if (index > 0 ) {
+                    addMarker(map, item);
+                }
+            });
+            
+
+        });
+}
+
+function addMarker(map, item) {
     var greenIcon = L.icon({
         iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
         shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
@@ -112,11 +182,26 @@ function addMarkers(map) {
         shadowAnchor: [4, 62], // the same for the shadow
         popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
+    console.log(item);
 
-    L.marker([3, -72], {
-            icon: greenIcon
+    const filtersPopup = item.items_type.
+        map(type=>`<li class="popup__filter"><p class="popup__filter-text">${type}</p></li>`).join('');
+
+    const popupHTML = `
+        <div class="popup__header">${item.organization}</div>
+        <p class="popup__description">${item.description}</p>
+        <ul class="popup__filters">${filtersPopup}</ul>
+        <div class="popup__actions">
+            <ul class="popup_links"></ul>
+            <a class="popup__action">Say HI</a>
+        </div>
+
+    `;
+
+    L.marker([item.latitude, item.longitude], {
+            // icon: greenIcon
         })
-        .bindPopup('<div style="width: 200px">Hola mundo</div>')
+        .bindPopup(popupHTML)
         .addTo(map);
 }
 
@@ -131,12 +216,12 @@ function geolocate(map) {
                 latitude,
                 longitude
             } = position.coords;
-            map.setView([latitude, longitude], 10)
+            map.setView([latitude, longitude], 14)
         });
     }
 }
 
-function enableLayer(idx){
+function enableLayer(idx) {
     var items = $(".panel-list li")
     var layer = $(items[idx])
     items.removeClass('active');
@@ -144,7 +229,7 @@ function enableLayer(idx){
     console.log(layer.find('a').html())
 }
 
-function searchItems(expresion){
+function searchItems(expresion) {
     console.log(expresion)
 }
 
@@ -156,6 +241,7 @@ $(document).ready(function () {
         attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
     }));
     addControls(map);
-    addMarkers(map);
+    loadMarkers(map);
     geolocate(map);
+
 });
