@@ -16,12 +16,14 @@ function addControls(map) {
             Items: [{
                     type: "link",
                     name: "Paper and cardboard",
-                    href: "javascript:enableLayer(0)"
+                    href: "javascript:enableLayer(0)",
+                    icon: "far fa-file"
                 },
                 {
                     type: "link",
                     name: "Glass",
-                    href: "javascript:enableLayer(1)"
+                    href: "javascript:enableLayer(1)",
+                    icon: "fas fa-flask"
                 },
                 {
                     type: "link",
@@ -31,12 +33,14 @@ function addControls(map) {
                 {
                     type: "link",
                     name: "Batteries",
-                    href: "javascript:enableLayer(3)"
+                    href: "javascript:enableLayer(3)",
+                    icon: "fas fa-battery-full"
                 },
                 {
                     type: "link",
                     name: "Electronic devices",
-                    href: "javascript:enableLayer(4)"
+                    href: "javascript:enableLayer(4)",
+                    icon: "fas fa-laptop"
                 },
                 {
                     type: "link",
@@ -46,7 +50,8 @@ function addControls(map) {
                 {
                     type: "link",
                     name: "Furniture",
-                    href: "javascript:enableLayer(6)"
+                    href: "javascript:enableLayer(6)",
+                    icon: "fas fa-couch"
                 },
                 {
                     type: "link",
@@ -56,12 +61,14 @@ function addControls(map) {
                 {
                     type: "link",
                     name: "Building materials",
-                    href: "javascript:enableLayer(8)"
+                    href: "javascript:enableLayer(8)",
+                    icon: "far fa-building"
                 },
                 {
                     type: "link",
                     name: "Books",
-                    href: "javascript:enableLayer(9)"
+                    href: "javascript:enableLayer(9)",
+                    icon: "fas fa-book"
                 },
                 {
                     type: "link",
@@ -71,7 +78,8 @@ function addControls(map) {
                 {
                     type: "link",
                     name: "Biological waste",
-                    href: "javascript:enableLayer(11)"
+                    href: "javascript:enableLayer(11)",
+                    icon: "fas fa-prescription-bottle-alt"
                 },
             ]
         }
