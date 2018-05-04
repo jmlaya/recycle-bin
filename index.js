@@ -7,15 +7,7 @@
 //         'Imagery © <a href="http://mapbox.com">Mapbox</a>',
 //     id: 'mapbox.streets'
 // }).addTo(mymap);
-
-$(document).ready(function () {
-
-    var map = L.map('mapid').setView([4, -72], 6);
-    map.zoomControl.setPosition('topright');
-    map.addLayer(new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        { attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors' }
-    ));
-
+function addControls(map) {
     var searchboxControl = createSearchboxControl();
     var control = new searchboxControl({
         sidebarTitleText: 'Recycle.bin',
@@ -37,7 +29,9 @@ $(document).ready(function () {
         alert(searchkeywords);
     }
     map.addControl(control);
+}
 
+function addMarkers(map) {
     var greenIcon = L.icon({
         iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
         shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
@@ -52,8 +46,31 @@ $(document).ready(function () {
     L.marker([3, -72], { icon: greenIcon })
         .bindPopup('<div style="width: 200px">Hola mundo</div>')
         .addTo(map);
-});
+}
 
 function button2_click() {
     alert('button 2 clicked !!!');
 }
+
+function geolocate(map) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const {latitude, longitude} = position.coords;
+            map.setView([latitude,longitude], 10)
+        }) ;
+    }
+}
+
+$(document).ready(function () {
+
+    var map = L.map('mapid').setView([4, -72], 6);
+    map.zoomControl.setPosition('topright');
+    map.addLayer(new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors' }
+    ));
+    addControls(map);
+    addMarkers(map);
+    geolocate(map);
+});
+
+
