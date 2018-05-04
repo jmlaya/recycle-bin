@@ -37,9 +37,13 @@ body {
   font-size: 1.25rem;
 }
 
-
-.leaflet-popup-content .card img{
-  background-color: #343a40 !important;
-  padding: 10px;
+.leaflet-popup-content .card .item-types {
+  color: #057aff;
 }
+
+.leaflet-popup-content .card .social a {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
 

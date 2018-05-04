@@ -2,6 +2,16 @@ let allMarkers  = [];
 let curGroup ;
 const map = L.map('mapid').setView([4, -72], 6);
 
+function makeNoCacheId() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 25; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
 function CSVtoArray(text) {
     let p = '',
         row = [''],
@@ -25,8 +35,6 @@ function CSVtoArray(text) {
     }
     return ret;
 };
-
-
 
 function addControls(map) {
     var searchboxControl = createSearchboxControl();
@@ -119,7 +127,10 @@ function addControls(map) {
 
     map.addControl(control);
 
-    $(".panel").css("display", 'block');
+    if(!window.device.mobile()){
+        $(".panel").css("display", 'block');
+    }
+
 }
 
 
@@ -146,8 +157,11 @@ function loadMarkers(map) {
                         twitter,
                         instagram,
                         latitude,
-                        longitude
+                        longitude,
+                        picture,
+                        verified
                     ] = line;
+
                     return {
                         timestamp,
                         email,
@@ -164,9 +178,17 @@ function loadMarkers(map) {
                         twitter,
                         instagram,
                         latitude: Number(latitude),
-                        longitude: Number(longitude)
+                        longitude: Number(longitude),
+                        picture,
+                        verified: Boolean(Number(verified))
                     }
-                }).forEach((item, index) => {
+                })
+                .filter(i => {
+                    console.log(i.verified);
+                    return i.verified;
+
+                })
+                .forEach((item, index) => {
                     if (index > 0) {
                         layers.push({
                             item,
@@ -182,7 +204,7 @@ function loadMarkers(map) {
 
 function buildMarker(map, item) {
     var greenIcon = L.icon({
-        iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+        iconUrl: 'http://poliklinika-krhen.hr/wp-content/uploads/2015/05/icon.png',
         shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
 
         iconSize: [38, 95], // size of the icon
@@ -197,11 +219,24 @@ function buildMarker(map, item) {
 
     const popupHTML = `
         <div class="card">
-            <img class="card-img-top" src="assets/image/logo.png" alt="Card image cap">
+            ${ item.picture ? `<img class="card-img-top" src="${item.picture}" alt="${item.organization}">` : '' }
             <div class="card-body">
                 <h5 class="card-title">${item.organization}</h5>
+                <p class="item-types">
+                    ${item.items_type.map(i => `<span>${i}</span>`).join(', ')}
+                </p>
                 <p class="card-text">${item.description}</p>
-                <a href="#" class="btn btn-primary text-white" role="button">Say HI</a>
+                <p>
+                    Address: ${item.address}
+                </p>
+                ${ item.phone && !window.device.mobile() ? `<p>Call them: ${item.phone}</p>` : ''}
+                <p class="social">
+                    ${ item.facebook ? `<a target="_blank" href="${item.facebook}"><i class="fab fa-facebook"></i></a>` : '' }
+                    ${ item.instagram ? `<a target="_blank" href="${item.instagram}"><i class="fab fa-instagram"></i></a>` : '' }
+                    ${ item.twitter ? `<a target="_blank" href="${item.twitter}"><i class="fab fa-twitter"></i></a>` : '' }
+                </p>
+                ${ item.website ? `<a href="${item.website}" class="btn btn-primary text-white ${window.device.mobile() ? 'btn-block' : ''}" role="button">Say HI</a>` : '' }
+                ${ item.phone && window.device.mobile() ? `<a href="tel:${item.phone}" class="btn btn-success text-white btn-block" role="button">Call them</a>` : '' }
             </div>
         </div>
     `;
@@ -244,13 +279,14 @@ function searchItems(expresion) {
 
 function showMarkers(map, markers) {
     if (curGroup) {
-       curGroup.remove(); 
+       curGroup.remove();
     }
     curGroup = L.layerGroup(markers.map(m => m.marker));
     curGroup.addTo(map);
 }
 
 $(document).ready(function () {
+    window.device = new MobileDetect(window.navigator.userAgent);
     map.zoomControl.setPosition('topright');
     map.addLayer(new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
@@ -261,5 +297,5 @@ $(document).ready(function () {
         allMarkers = markers;
         showMarkers(map, allMarkers);
     });
-   
+
 });
