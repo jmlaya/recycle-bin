@@ -236,7 +236,7 @@ function buildMarker(map, item) {
                     ${ item.twitter ? `<a target="_blank" href="${item.twitter}"><i class="fab fa-twitter"></i></a>` : '' }
                     ${ item.address ? `<a target="_blank" href="https://www.google.com/maps/search/?api=1&query=${item.latitude},${item.longitude}"><i class="fas fa-location-arrow"></i></a>` : '' }
                 </p>
-                ${ item.website ? `<a href="${item.website}" class="btn btn-primary text-white ${window.device.mobile() ? 'btn-block' : ''}" role="button">Say HI</a>` : '' }
+                ${ item.website ? `<a target="_blank" href="${item.website}" class="btn btn-primary text-white ${window.device.mobile() ? 'btn-block' : ''}" role="button">Say HI</a>` : '' }
                 ${ item.phone && window.device.mobile() ? `<a href="tel:${item.phone}" class="btn btn-success text-white btn-block" role="button">Call them</a>` : '' }
             </div>
         </div>
