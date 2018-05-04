@@ -183,11 +183,7 @@ function loadMarkers(map) {
                         verified: Boolean(Number(verified))
                     }
                 })
-                .filter(i => {
-                    console.log(i.verified);
-                    return i.verified;
-
-                })
+                .filter(i => i.verified)
                 .forEach((item, index) => {
                     if (index > 0) {
                         layers.push({

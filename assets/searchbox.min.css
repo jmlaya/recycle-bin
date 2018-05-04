@@ -134,7 +134,7 @@ ul {
 }
 
 .panel {
-  width: 300px;
+  width: 250px;
   float: left;
   background: #fff;
   position: relative;
@@ -148,19 +148,21 @@ ul {
 }
 
 .panel-header-container {
-  display: table-row
+  display: table-row;
+  background-color: rgba(0, 0, 0, .03);
 }
 
 .panel-header-title {
   display: table-cell;
   font-weight: 600;
   font-size: 20px;
-  text-align: center;
+  text-align: left;
   width: 95%;
   line-height: 24px;
   padding-top: 10px;
   padding-bottom: 10px;
-  color: #c3c3c3
+  color: #212529a6;
+  padding-left: 15px;
 }
 
 .panel-close-button {
@@ -171,7 +173,8 @@ ul {
   margin: 5px;
   cursor: pointer;
   opacity: .6;
-  vertical-align: middle
+  vertical-align: middle;
+  margin-top: -6px;
 }
 
 .panel-close-button:hover {
@@ -198,8 +201,7 @@ ul {
 }
 
 .panel-content a,
-button,
-li:hover {
+button{
   color: #777;
   cursor: pointer;
   font-size: 14px;
@@ -219,12 +221,10 @@ li:hover {
 }
 
 
-
 .panel-content a {
   text-decoration: none
 }
 
-.panel-content a:hover,
 button:hover {
   color: #00f
 }
