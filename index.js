@@ -28,7 +28,7 @@ function addControls(map) {
     var searchboxControl = createSearchboxControl();
     var control = new searchboxControl({
         searchfunctionCallBack: searchItems,
-        sidebarTitleText: 'Map layers',
+        sidebarTitleText: 'Item types',
         sidebarMenuItems: {
             Items: [{
                     type: "link",

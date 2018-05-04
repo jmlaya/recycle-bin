@@ -33,6 +33,11 @@ body {
   border: none;
 }
 
+.leaflet-popup-content .card .card-title {
+  font-size: 1.25rem;
+}
+
+
 .leaflet-popup-content .card img{
   background-color: #343a40 !important;
   padding: 10px;
