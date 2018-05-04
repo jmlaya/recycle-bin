@@ -136,7 +136,6 @@ ul {
 .panel {
   width: 300px;
   float: left;
-  height: 550px;
   background: #fff;
   position: relative;
   display: none;
@@ -187,7 +186,7 @@ ul {
 }
 
 .panel-list-item {
-  padding: 10px 20px 20px;
+  padding: 10px;
   cursor: pointer
 }
 
@@ -196,7 +195,6 @@ ul {
   height: 22px;
   display: inline-block;
   opacity: .5;
-  margin-right: 25px
 }
 
 .panel-content a,
@@ -208,6 +206,19 @@ li:hover {
   line-height: 22px;
   vertical-align: top
 }
+
+.panel li:hover {
+  color: #777;
+  cursor: pointer;
+  background-color: #eaeaea;
+}
+
+.panel li.active {
+  color: #777;
+  background-color: #eaeaea;
+}
+
+
 
 .panel-content a {
   text-decoration: none

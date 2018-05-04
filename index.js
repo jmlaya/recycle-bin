@@ -10,37 +10,68 @@
 function addControls(map) {
     var searchboxControl = createSearchboxControl();
     var control = new searchboxControl({
-        sidebarTitleText: 'Recycle.bin',
+        searchfunctionCallBack: searchItems,
+        sidebarTitleText: 'Map layers',
         sidebarMenuItems: {
             Items: [{
                     type: "link",
-                    name: "Link 1 (github.com)",
-                    href: "http://github.com",
-                    icon: "icon-local-carwash"
+                    name: "Paper and cardboard",
+                    href: "javascript:enableLayer(0)"
                 },
                 {
                     type: "link",
-                    name: "Link 2 (google.com)",
-                    href: "http://google.com",
-                    icon: "icon-cloudy"
-                },
-                {
-                    type: "button",
-                    name: "Button 1",
-                    onclick: "alert('button 1 clicked !')",
-                    icon: "icon-potrait"
-                },
-                {
-                    type: "button",
-                    name: "Button 2",
-                    onclick: "button2_click();",
-                    icon: "icon-local-dining"
+                    name: "Glass",
+                    href: "javascript:enableLayer(1)"
                 },
                 {
                     type: "link",
-                    name: "Link 3 (stackoverflow.com)",
-                    href: 'http://stackoverflow.com',
-                    icon: "icon-bike"
+                    name: "Plastic",
+                    href: "javascript:enableLayer(2)"
+                },
+                {
+                    type: "link",
+                    name: "Batteries",
+                    href: "javascript:enableLayer(3)"
+                },
+                {
+                    type: "link",
+                    name: "Electronic devices",
+                    href: "javascript:enableLayer(4)"
+                },
+                {
+                    type: "link",
+                    name: "Clothes & Shoes",
+                    href: "javascript:enableLayer(5)"
+                },
+                {
+                    type: "link",
+                    name: "Furniture",
+                    href: "javascript:enableLayer(6)"
+                },
+                {
+                    type: "link",
+                    name: "Appliances",
+                    href: "javascript:enableLayer(7)"
+                },
+                {
+                    type: "link",
+                    name: "Building materials",
+                    href: "javascript:enableLayer(8)"
+                },
+                {
+                    type: "link",
+                    name: "Books",
+                    href: "javascript:enableLayer(9)"
+                },
+                {
+                    type: "link",
+                    name: "Baby products",
+                    href: "javascript:enableLayer(10)"
+                },
+                {
+                    type: "link",
+                    name: "Biological waste",
+                    href: "javascript:enableLayer(11)"
                 },
             ]
         }
@@ -52,7 +83,10 @@ function addControls(map) {
         }
         alert(searchkeywords);
     }
+
     map.addControl(control);
+
+    $(".panel").css("display", 'block');
 }
 
 function addMarkers(map) {
@@ -88,6 +122,18 @@ function geolocate(map) {
             map.setView([latitude, longitude], 10)
         });
     }
+}
+
+function enableLayer(idx){
+    var items = $(".panel-list li")
+    var layer = $(items[idx])
+    items.removeClass('active');
+    layer.addClass('active');
+    console.log(layer.find('a').html())
+}
+
+function searchItems(expresion){
+    console.log(expresion)
 }
 
 $(document).ready(function () {
