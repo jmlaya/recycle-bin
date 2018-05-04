@@ -1,3 +1,7 @@
+let allMarkers  = [];
+let curGroup ;
+const map = L.map('mapid').setView([4, -72], 6);
+
 function CSVtoArray(text) {
     let p = '',
         row = [''],
@@ -40,13 +44,13 @@ function addControls(map) {
                     type: "link",
                     name: "Glass",
                     href: "javascript:enableLayer(1)",
-                    icon: "fas fa-flask"
+                    icon: "fas fa-glass-martini"
                 },
                 {
                     type: "link",
                     name: "Plastic",
                     href: "javascript:enableLayer(2)",
-                    icon: "fas fa-bullseye"
+                    icon: "fas fa-recycle"
                 },
                 {
                     type: "link",
@@ -94,7 +98,7 @@ function addControls(map) {
                     type: "link",
                     name: "Baby products",
                     href: "javascript:enableLayer(10)",
-                    icon: "fas fa-bullseye"
+                    icon: "fas fa-child"
                 },
                 {
                     type: "link",
@@ -120,58 +124,63 @@ function addControls(map) {
 
 
 function loadMarkers(map) {
-    $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vTVC-LFP9OxPSuj5D_DfLc_ChY_ricTX76xR6xEjU-KRASLxyRWPjRThzBoi9QfPK0KPgYdL8TENOEj/pub?gid=2103502970&single=true&output=csv')
+    return $.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vTVC-LFP9OxPSuj5D_DfLc_ChY_ricTX76xR6xEjU-KRASLxyRWPjRThzBoi9QfPK0KPgYdL8TENOEj/pub?gid=2103502970&single=true&output=csv')
         .then(data => {
 
-            const lines = CSVtoArray(data)
-
-           lines.map(line => {
-                const [timestamp,
-                    email,
-                    organization,
-                    description,
-                    collection_type,
-                    items_type,
-                    city,
-                    state,
-                    address,
-                    phone,
-                    website,
-                    facebook,
-                    twitter,
-                    instagram,
-                    latitude,
-                    longitude
-                ] = line;
-                return {
-                    timestamp,
-                    email,
-                    organization,
-                    description,
-                    collection_type,
-                    items_type: items_type.split(', '),
-                    city,
-                    state,
-                    address,
-                    phone,
-                    website,
-                    facebook,
-                    twitter,
-                    instagram,
-                    latitude: Number(latitude),
-                    longitude: Number(longitude)
-                }
-            }).forEach((item, index) => {
-                if (index > 0 ) {
-                    addMarker(map, item);
-                }
+            return new Promise(resolve => {
+                const layers = [];
+                const lines = CSVtoArray(data);
+                lines.map(line => {
+                    const [timestamp,
+                        email,
+                        organization,
+                        description,
+                        collection_type,
+                        items_type,
+                        city,
+                        state,
+                        address,
+                        phone,
+                        website,
+                        facebook,
+                        twitter,
+                        instagram,
+                        latitude,
+                        longitude
+                    ] = line;
+                    return {
+                        timestamp,
+                        email,
+                        organization,
+                        description,
+                        collection_type,
+                        items_type: items_type.split(', '),
+                        city,
+                        state,
+                        address,
+                        phone,
+                        website,
+                        facebook,
+                        twitter,
+                        instagram,
+                        latitude: Number(latitude),
+                        longitude: Number(longitude)
+                    }
+                }).forEach((item, index) => {
+                    if (index > 0) {
+                        layers.push({
+                            item,
+                            marker:buildMarker(map, item)
+                        });
+                    }
+                });
+                resolve(layers);
             });
-
 
         });
 }
 
-function addMarker(map, item) {
+function buildMarker(map, item) {
     var greenIcon = L.icon({
         iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
         shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
@@ -182,10 +191,9 @@ function addMarker(map, item) {
         shadowAnchor: [4, 62], // the same for the shadow
         popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
-    console.log(item);
 
     const filtersPopup = item.items_type.
-        map(type=>`<li class="popup__filter"><p class="popup__filter-text">${type}</p></li>`).join('');
+    map(type => `<li class="popup__filter"><p class="popup__filter-text">${type}</p></li>`).join('');
 
     const popupHTML = `
         <div class="card">
@@ -198,11 +206,10 @@ function addMarker(map, item) {
         </div>
     `;
 
-    L.marker([item.latitude, item.longitude], {
+    return L.marker([item.latitude, item.longitude], {
             // icon: greenIcon
         })
         .bindPopup(popupHTML)
-        .addTo(map);
 }
 
 function button2_click() {
@@ -222,26 +229,37 @@ function geolocate(map) {
 }
 
 function enableLayer(idx) {
-    var items = $(".panel-list li")
-    var layer = $(items[idx])
+    const items = $(".panel-list li")
+    const layer = $(items[idx])
     items.removeClass('active');
     layer.addClass('active');
-    console.log(layer.find('a').html())
+    const expression = layer.find('a').html();
+    const markers = allMarkers.filter((m) => m.item.items_type.indexOf(expression)> -1);
+    showMarkers(map, markers);
 }
 
 function searchItems(expresion) {
-    console.log(expresion)
+
+}
+
+function showMarkers(map, markers) {
+    if (curGroup) {
+       curGroup.remove(); 
+    }
+    curGroup = L.layerGroup(markers.map(m => m.marker));
+    curGroup.addTo(map);
 }
 
 $(document).ready(function () {
-
-    var map = L.map('mapid').setView([4, -72], 6);
     map.zoomControl.setPosition('topright');
     map.addLayer(new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
     }));
     addControls(map);
-    loadMarkers(map);
     geolocate(map);
-
+    loadMarkers(map).then(markers => {
+        allMarkers = markers;
+        showMarkers(map, allMarkers);
+    });
+   
 });
