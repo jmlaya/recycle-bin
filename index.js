@@ -227,13 +227,14 @@ function buildMarker(map, item) {
                 </p>
                 <p class="card-text">${item.description}</p>
                 <p>
-                    Address: ${item.address}
+                    Address: <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=${item.latitude},${item.longitude}">${item.address}</a>
                 </p>
                 ${ item.phone && !window.device.mobile() ? `<p>Call them: ${item.phone}</p>` : ''}
                 <p class="social">
                     ${ item.facebook ? `<a target="_blank" href="${item.facebook}"><i class="fab fa-facebook"></i></a>` : '' }
                     ${ item.instagram ? `<a target="_blank" href="${item.instagram}"><i class="fab fa-instagram"></i></a>` : '' }
                     ${ item.twitter ? `<a target="_blank" href="${item.twitter}"><i class="fab fa-twitter"></i></a>` : '' }
+                    ${ item.address ? `<a target="_blank" href="https://www.google.com/maps/search/?api=1&query=${item.latitude},${item.longitude}"><i class="fas fa-location-arrow"></i></a>` : '' }
                 </p>
                 ${ item.website ? `<a href="${item.website}" class="btn btn-primary text-white ${window.device.mobile() ? 'btn-block' : ''}" role="button">Say HI</a>` : '' }
                 ${ item.phone && window.device.mobile() ? `<a href="tel:${item.phone}" class="btn btn-success text-white btn-block" role="button">Call them</a>` : '' }
