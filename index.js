@@ -28,7 +28,8 @@ function addControls(map) {
                 {
                     type: "link",
                     name: "Plastic",
-                    href: "javascript:enableLayer(2)"
+                    href: "javascript:enableLayer(2)",
+                    icon: "fas fa-bullseye"
                 },
                 {
                     type: "link",
@@ -45,7 +46,8 @@ function addControls(map) {
                 {
                     type: "link",
                     name: "Clothes & Shoes",
-                    href: "javascript:enableLayer(5)"
+                    href: "javascript:enableLayer(5)",
+                    icon: "fas fa-bullseye"
                 },
                 {
                     type: "link",
@@ -56,7 +58,8 @@ function addControls(map) {
                 {
                     type: "link",
                     name: "Appliances",
-                    href: "javascript:enableLayer(7)"
+                    href: "javascript:enableLayer(7)",
+                    icon: "fas fa-bullseye"
                 },
                 {
                     type: "link",
@@ -73,7 +76,8 @@ function addControls(map) {
                 {
                     type: "link",
                     name: "Baby products",
-                    href: "javascript:enableLayer(10)"
+                    href: "javascript:enableLayer(10)",
+                    icon: "fas fa-bullseye"
                 },
                 {
                     type: "link",
